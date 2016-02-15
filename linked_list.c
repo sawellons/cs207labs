@@ -1,3 +1,4 @@
+
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -32,6 +33,58 @@ int get(Item* listptr, int index){
     return -1;
 }
 
+int find_min_index(Item* listptr){
+    int ctr = 0;
+    int minctr = 0;
+    Item* p;
+    int min = listptr -> value;
+    for(p = listptr; p!= NULL; p = p->rest){
+        if (p->value <= min) {
+            min = p->value;
+            minctr = ctr;
+        }
+        ctr++;
+    }
+    return minctr;
+}
+
+int get_index(Item* listptr, int value){
+    int ctr = 0;
+    Item* p;
+    for(p = listptr; p!= NULL; p = p->rest){
+        if (p->value == value) {
+	  return ctr;
+        }
+        ctr++;
+    }
+    return -1;
+}
+
+Item* remove_item(Item* listptr, int value){
+    int ctr = 0;
+    Item* p;
+    Item* lastp;
+    Item* nextp;
+    for(p = listptr; p!= NULL; p = p->rest){
+        if (p->value == value) {
+	  if (ctr == 0) {
+	    nextp = p->rest;
+	    free(p);
+	    return nextp;
+	  }
+	  if (p->rest == NULL) {
+	    lastp->rest = NULL;
+	    free(p);
+	    return listptr;
+	  }
+	  lastp->rest = p->rest;
+	  free(p);
+	  return listptr;
+        }
+	lastp = p;
+    }
+    return NULL;
+}
 
 void free_all(Item* listptr) {
     Item *p;
